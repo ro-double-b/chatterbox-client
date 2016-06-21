@@ -1,78 +1,118 @@
-$(document).ready(function() {
+var messages = [];
 
+var app = {
+  init: function() {
+  },
 
-  var messages = [];
+  server: 'https://api.parse.com/1/classes/messages',
 
-  var app = {
-    init: function() {
-    },
+  send: function(chatMessage) {
 
-    server: 'https://api.parse.com/1/classes/messages',
+    $.ajax({
+      url: app.server,
+      type: 'POST',
+      data: JSON.stringify(chatMessage),
+      contentType: 'application/json',
+      success: function (data) {
+        app.addMessage(chatMessage);
+        console.log('chatterbox: Message sent');
+      },
+      error: function (data) {
+        console.log('chatterbox: Failed to send message', data);
+      }
+    });
+  },
 
-    send: function(chatMessage) {
+  fetch: function() {
+    $.ajax({
+      url: app.server,
+      type: 'GET',
+      success: function (data) {
+        appendChat(data.results);
+        console.log('chatterbox: Message Recieved');
+      },
+      error: function (data) {
+        console.log('chatterbox: Failed to send message', data);
+      }
+    });
+  },
 
-      $.ajax({
-        url: app.server,
-        type: 'POST',
-        data: JSON.stringify(chatMessage),
-        contentType: 'application/json',
-        success: function (data) {
-          console.log('chatterbox: Message sent');
-        },
-        error: function (data) {
-          console.log('chatterbox: Failed to send message', data);
+  clearMessages: function() {
+    $('#chats').empty();
+  },
+
+  addMessage: function(data) {
+    $('#chats').prepend('<div>' + escapeHtml(data.username) + ' ' + escapeHtml(data.text) + '</div>');
+    console.log($('#chats'));
+  },
+
+  addRoom: function(room) {
+
+    $('#roomSelect').append('<option value="' + room + '">' + room + '</option>');
+
+  },
+
+  addFriend: function() {
+  
+    $(document).on('click', 'span', function() {
+      var username = $(this).attr('class');
+      $('span').each(function() {
+        if ($(this).attr('class') === username) {
+          $(this).toggleClass('bold');
         }
       });
-    },
+    });
+  }
+};
 
-    fetch: function() {
-      $.ajax({
-        url: app.server,
-        type: 'GET',
-        success: function (data) {
-          appendChat(data.results);
-          console.log('chatterbox: Message Recieved');
-        },
-        error: function (data) {
-          console.error('chatterbox: Failed to send message', data);
-        }
-      });
-    },
+app.fetch();
 
-    clearMessages: function() {
-      $('#chats').remove();
-    },
+var appendChat = function(data) {
+  for (var i = 0; i < data.length; i++) {
+    $('#chats').append('<div><span class="' + escapeHtml(data[i].username) + '">' + escapeHtml(data[i].username) + '</span> ' 
+      + escapeHtml(data[i].text) + '</div>');
 
-    addMessage: function(message) {
-      $('#chats').append('<div>UserName:<span class="'+ data[i].username+'">' + data[i].username + '</span> ' + data[i].roomname + ' ' + data[i].text + '</div>');
-    },
+    '<span class="' + escapeHtml(data[i].roomname) + '">' + escapeHtml(data[i].roomname) + '</span> '
+  }
+};
 
-    addRoom: function(room) {
-      $('#roomSelect').append('<option value="' + room + '">' + room + '</option.');
-    },
+app.addFriend();
 
-    addFriend: function() {
-      console.log($('#chats').children.length);
-    }
-       
-  };
+var entityMap = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': '&quot;',
+  "'": '&#39;',
+  "/": '&#x2F;'
+};
 
-  app.fetch();
-  app.addFriend();
-  var appendChat = function(data) {
-    for (var i = 0; i < data.length; i++) {
-      $('#chats').append('<div>UserName:<span class="'+ data[i].username+'">' + data[i].username + '</span> ' + data[i].roomname + ' ' + data[i].text + '</div>');
-    }
-
-
-
-    $('').on('click', function() {
-      alert($(this).attr('class'))
-    })
+var escapeHtml = function(string) {
+  return String(string).replace(/[&<>"'\/]/g, function (s) {
+    return entityMap[s];
+  });
+};
+          
+            // $(document).on('click', 'button', function() {
+            //   var obj = {};
+            //   obj.username = $('#user').val();
+            //   obj.text = $('#input').val();
+            //   obj.roomname = $('#chatRoom').val();
+            //   app.send(obj);
+            // });
+          
+    // $('').on('click', function() {
+    //   alert($(this).attr('class'))
+    // })
 
 
-  };
-});
+// $(document).ready(function() {
+//   // console.log($('#chats').children().length);
+//   $('div').on('click', function() {
+//     console.log($(this));
+//   });
+// });
+
 
 
 // $('#chats').append(messages);
@@ -129,20 +169,6 @@ $(document).ready(function() {
 //   };
 
 
- // var entityMap = {
- //    "&": "&amp;",
- //    "<": "&lt;",
- //    ">": "&gt;",
- //    '"': '&quot;',
- //    "'": '&#39;',
- //    "/": '&#x2F;'
- //  };
-
- //  function escapeHtml(string) {
- //    return String(string).replace(/[&<>"'\/]/g, function (s) {
- //      return entityMap[s];
- //    });
- //  }
 
 
 // });
