@@ -18,6 +18,10 @@
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
     </div>
+    <select id='roomSelect'>
+    
+    </select>
+
     <div>User Name<input type="text" id='user'></div> 
     <div>Message<input type="text" id='input'></div> 
     <div>Room Name<input type="text" id='chatRoom'></div> 
@@ -34,7 +38,6 @@
           obj.text = $('#input').val();
           obj.roomname = $('#chatRoom').val();
           app.send(obj);
-         $('#chats').append(messages); 
          })
       });
     </script>
