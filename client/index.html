@@ -34,7 +34,8 @@
           obj.text = $('#input').val();
           obj.roomname = $('#chatRoom').val();
           app.send(obj);
-         }) 
+         $('#chats').append(messages); 
+         })
       });
     </script>
   </body>

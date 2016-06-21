@@ -1,20 +1,15 @@
-    // var message = {
-    //   username: '',
-    //   text: '',
-    //   roomname: ''
-    // };
+var messages = [];
 
 var app = {
   init: function() {
-
   },
 
-  servers: 'https://api.parse.com/1/classes/messages',
+  server: 'https://api.parse.com/1/classes/messages',
 
   send: function(chatMessage) {
   
     $.ajax({
-      url: 'https://api.parse.com/1/classes/messages',
+      url: app.server,
       type: 'POST',
       data: JSON.stringify(chatMessage),
       contentType: 'application/json',
@@ -28,13 +23,33 @@ var app = {
   },
 
   fetch: function() {
-
-  }
-
-
+    $.ajax({
+      url: app.server,
+      type: 'GET',
+      success: function (data) {
+        appendChat(data.results);
+        console.log('chatterbox: Message Recieved');
+      },
+      error: function (data) {
+        console.error('chatterbox: Failed to send message', data);
+      }
+    });
+  }      
 };
 
+app.fetch();
 
+
+var appendChat = function(data) {
+  for (var i = 0; i < data.length; i++) {
+    $('#chats').append('<div>' + data[i].username + ' ' + data[i].roomname + ' ' + data[i].text + '</div>');
+  }
+};
+
+// $('#chats').append(messages);
+// generateChats(array);
+
+// app.fetch();
 // $(document).ready(function() {
 //   $('#get').on('click', function() {
 //     var chatMessage = {}
@@ -47,29 +62,6 @@ var app = {
 // // YOUR CODE HERE:
 
 
-//   var getMessage = function() {
-//     var message = {
-//       username: '',
-//       text: '',
-//       roomname: ''
-//     };
-
-//     $.ajax({
-//       url: 'https://api.parse.com/1/classes/messages',
-//       type: 'GET',
-//       data: JSON.stringify(message),
-//       contentType: 'application/json',
-//       success: function (data) {
-//         for (var i = 0; i < data.results.length; i++) {
-//           $('#chats').append((data.results[i].text + '<br>'));
-//           console.log('chatterbox: Message Recieved');
-//         }
-//       },
-//       error: function (data) {
-//         console.error('chatterbox: Failed to send message', data);
-//       }
-//     });
-//   };
 
 //   getMessage();
 
@@ -108,20 +100,20 @@ var app = {
 //   };
 
 
- var entityMap = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': '&quot;',
-    "'": '&#39;',
-    "/": '&#x2F;'
-  };
+ // var entityMap = {
+ //    "&": "&amp;",
+ //    "<": "&lt;",
+ //    ">": "&gt;",
+ //    '"': '&quot;',
+ //    "'": '&#39;',
+ //    "/": '&#x2F;'
+ //  };
 
-  function escapeHtml(string) {
-    return String(string).replace(/[&<>"'\/]/g, function (s) {
-      return entityMap[s];
-    });
-  }
+ //  function escapeHtml(string) {
+ //    return String(string).replace(/[&<>"'\/]/g, function (s) {
+ //      return entityMap[s];
+ //    });
+ //  }
 
 
 // });
