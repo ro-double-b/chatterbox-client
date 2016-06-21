@@ -32,6 +32,7 @@
     
     <div id="chats"></div>
     <script>
+
       $(document).ready(function() {
          $('#get').on('click', function() {
           var obj = {};
@@ -44,12 +45,15 @@
          $('#refresh').on('click', function() {
           app.clearMessages();
           app.fetch();
-         })
-
+        })
+         var roomArr = [];
          $('#get').on('click', function() {
-            var room = $('#chatRoom').val();
-            $('#roomSelect').append('<option>' + room + '</option>');
+            if(roomArr.indexOf($('#chatRoom').val()) === -1 && $('#chatRoom').val !== "") { 
+              roomArr.push($('#chatRoom').val());
+              $('#roomSelect').append('<option>' + $('#chatRoom').val() + '</option>');
+            }
          })
+         
       });
     </script>
   </body>
