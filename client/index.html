@@ -18,7 +18,24 @@
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
     </div>
-    <div class="userInput">Send Chat<input type="text"></div> <button id="get">Submit</button>
+    <div>User Name<input type="text" id='user'></div> 
+    <div>Message<input type="text" id='input'></div> 
+    <div>Room Name<input type="text" id='chatRoom'></div> 
+    <button id="get">Submit</button>
+
+
+    
     <div id="chats"></div>
+    <script>
+      $(document).ready(function() {
+         $('#get').on('click', function() {
+          var obj = {};
+          obj.username = $('#user').val();
+          obj.text = $('#input').val();
+          obj.roomname = $('#chatRoom').val();
+          app.send(obj);
+         }) 
+      });
+    </script>
   </body>
 </html>
