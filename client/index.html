@@ -18,7 +18,6 @@
       <!-- Your HTML goes here! -->
     </div>
     <select id='roomSelect'>
-      <option>test test test</option>
     
     </select>
 
@@ -53,7 +52,22 @@
               $('#roomSelect').append('<option>' + $('#chatRoom').val() + '</option>');
             }
          })
-         
+
+         $('select').change(function() {
+          console.log($(this).val());
+          var chat = $('#chats').children();
+          for (var i = 0; i < chat.length; i++) {
+
+           if($(chat[i]).hasClass($(this).val())) {
+            $(chat[i]).css('display', 'block');
+           } else {
+            $(chat[i]).css('display', 'none')
+           }
+
+            }
+          })
+        
+
       });
     </script>
   </body>

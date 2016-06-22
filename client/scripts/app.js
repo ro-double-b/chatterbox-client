@@ -1,8 +1,10 @@
-var messages = [];
+
 
 var app = {
   init: function() {
+    this.fetch();
   },
+
 
   server: 'https://api.parse.com/1/classes/messages',
 
@@ -15,7 +17,6 @@ var app = {
       contentType: 'application/json',
       success: function (data) {
         app.addMessage(chatMessage);
-        console.log(chatMessage)
         console.log('chatterbox: Message sent');
       },
       error: function (data) {
@@ -61,6 +62,8 @@ var app = {
     }
   },
 
+  
+
   addFriend: function() {
   
     $(document).on('click', 'span', function() {
@@ -78,19 +81,21 @@ var app = {
     });
   }
 };
+app.init();
 
-app.fetch();
 
 var appendChat = function(data) {
   for (var i = 0; i < data.length; i++) {
     if (escapeHtml(data[i].username) === data[i].username && escapeHtml(data[i].roomname) === data[i].roomname && escapeHtml(data[i].text) === data[i].text) {
-      $('#chats').append('<div><span class="user ' + escapeHtml(data[i].username) + ' ' + escapeHtml(data[i].roomname) + '">' + escapeHtml(data[i].username) + '</span> ' +
-      '<span class="text">' + escapeHtml(data[i].text) + '</span>' + '</div>');
+      $('#chats').append(
+        '<div class="' + escapeHtml(data[i].roomname) + '">' + 
+          '<span class="user ' + escapeHtml(data[i].username) + '">' + escapeHtml(data[i].username) + '</span> ' +
+          '<span class="text">' + escapeHtml(data[i].text) + '</span>' +
+        '</div>');
     }
     // '<span class="' + escapeHtml(data[i].roomname) + '">' + escapeHtml(data[i].roomname) + '</span> '
   }
 };
-
 app.addFriend();
 
 var entityMap = {
